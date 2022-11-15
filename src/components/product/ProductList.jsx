@@ -9,9 +9,23 @@ const ProductList = () => {
     const [products, setProducts] = useState(ProductData);
     const [search,setSearch] = useState('')
     const [filtered,setFiltered] = useState([])
+    // const [categories, setCategories] = useState(allCategories)
+
+    const allCategories =["all", ...new Set(ProductData.map((product)=> product.category
+    ))]
 
     const handleSearch = (e)=>{ 
         setSearch(e.target.value)
+    }
+
+    const filterProduct = (category)=>{
+        if(category === "all"){
+            setProducts(ProductData);
+            return;
+        }
+
+        const newProducts = ProductData.filter((product)=>product.category === category) 
+        setProducts(newProducts)
     }
 
     useEffect(()=>{
@@ -25,20 +39,23 @@ const ProductList = () => {
                     <h1 className='--color-white --text-center'><span className='--color-danger'>Poducts</span> Filter</h1>
                     <div className='--flex-between --flex-dir-column --py'>
                         <Search inputValue={search} onHandleChange={handleSearch} />
-                        <Categories />
+                        <Categories allCategories= {allCategories} filterItems ={filterProduct}/>
                     </div>
                 </header>
             </div>
             <div className="product-container">
                 <div className="products container --grid-25 py2">
-                    {filtered.map((item) => {
+                    {filtered.length === 0 ? (
+                        <h3>No products Found</h3>
+                    ) :(
+                    filtered.map((item) => {
                         const { id, title, img, price } = item;
                         return (
                             <div>
                                 <Product  title={title} img={img} price={price} />
                             </div>
                         )
-                    })}
+                    }))}
 
                 </div>
             </div>
