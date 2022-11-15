@@ -1,9 +1,10 @@
 import "./App.scss";
+import ProductList from "./components/product/ProductList";
 
 function App() {
   return (
     <div>
-      <h1>Hello World!!!</h1>
+      <ProductList />
     </div>
   );
 }
